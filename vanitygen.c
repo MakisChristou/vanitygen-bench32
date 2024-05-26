@@ -101,6 +101,7 @@ double get_difficulty(char* pattern, char* hrp)
 
 }
 
+extern void check_pattern(char* pattern);
 
 // Use getopt to parse cli arguments
 void parse_arguments(int argc, char** argv)
@@ -181,7 +182,7 @@ void check_pattern(char* pattern)
 // Address generation code
 void* vanity_engine(void *vargp)
 {
-	int threadid = (int *)vargp;
+	int threadid = *(int *)vargp;
 
 	// Declare Secp256k1 Stuff
 	secp256k1_context *sec_ctx;
@@ -227,8 +228,8 @@ void* vanity_engine(void *vargp)
 	
 	// Generate private key
 	if((fd=open("/dev/urandom", O_RDONLY|O_NOCTTY)) == -1) {
-	perror("/dev/urandom");
-	return;
+		perror("/dev/urandom");
+		return NULL;
 	}
 
 	// Stolen from supervanitygen
@@ -238,7 +239,7 @@ void* vanity_engine(void *vargp)
 		if(len != -1)
 		errno=EAGAIN;
 		perror("/dev/urandom");
-		return;
+		return NULL;
 	}
 	} while(privkey[0]+1 < 2);  /* Ensure only valid private keys */
 
@@ -372,7 +373,7 @@ int main(int argc, char** argv)
     int status;
 
     for(i=0;i<noOfThread;i++)
-    	pthread_create (&thread_id[i], NULL , &vanity_engine, i);
+    	pthread_create (&thread_id[i], NULL , &vanity_engine, (void*)&i);
     
     for(i=0;i<noOfThread;i++)
         pthread_join(thread_id[i],NULL);  

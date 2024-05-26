@@ -52,3 +52,6 @@ Address:       bc1q0000erwyfzl9m6y9yr8sun52p6tvmrzp5jpwtt
 
 ## Important Notes
 When using this software double check the generated addresses using other implementations to make sure that everyting is working correctly. Do NOT send mainnet coins to generated addresses unless you make sure that the address matches the coresponding private key. I would recommend this open source [tool](https://segwitaddress.org/bech32/) for double checking. Also, please do not use the addresses shown in this readme file as you will (probably) get robbed.
+
+## Notes for macOS
+If building on macOS, please install the secp256k1 package using (home)brew, as the version for macOS is not packaged into this repository.
