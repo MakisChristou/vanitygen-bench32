@@ -24,7 +24,11 @@ distclean: clean
 
 vanitygen: $(OBJS)
 
-$(OBJS): Makefile *.h secp256k1/src/libsecp256k1-config.h secp256k1/src/ecmult_static_context.h
+
+UNAME_S := $(shell uname -s)
+
+# If on macOS, please install secp256k1 using (home)brew instead.
+$(OBJS): Makefile *.h $(ifneq ($(UNAME_S),Darwin),secp256k1/src/libsecp256k1-config.h secp256k1/src/ecmult_static_context.h)
 
 secp256k1/src/libsecp256k1-config.h:
 	(cd secp256k1;./autogen.sh;./configure)

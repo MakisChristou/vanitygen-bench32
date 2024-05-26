@@ -11,10 +11,14 @@
 #include <errno.h>
 #include <sched.h>
 #include <sys/signal.h>
-#include <sys/prctl.h>
 #include <sys/mman.h>
-#include <sys/sysinfo.h>
 #include <arpa/inet.h>
+
+// these headers are unavailable for macOS
+#ifndef __APPLE__
+  #include <sys/prctl.h>
+  #include <sys/sysinfo.h>
+#endif
 
 /* Define our own set of types */
 #undef quad
